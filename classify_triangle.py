@@ -1,4 +1,4 @@
-#Rishika
+#Rishikaa
 def classify_triangle(a, b, c):
     """
     Classifies the type of triangle based on side lengths a, b, and c.
