@@ -1,57 +1,32 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jan 14 13:44:00 2016
-Updated Jan 21, 2018
-
-The primary goal of this file is to demonstrate a simple python program to classify triangles
-
-@author: jrr
-@author: rk
-"""
-
-def classifyTriangle(a,b,c):
-    """
-    Your correct code goes here...  Fix the faulty logic below until the code passes all of 
-    you test cases. 
-    
-    This function returns a string with the type of triangle from three integer values
-    corresponding to the lengths of the three sides of the Triangle.
-    
-    return:
-        If all three sides are equal, return 'Equilateral'
-        If exactly one pair of sides are equal, return 'Isoceles'
-        If no pair of  sides are equal, return 'Scalene'
-        If not a valid triangle, then return 'NotATriangle'
-        If the sum of any two sides equals the squate of the third side, then return 'Right'
-      
-      BEWARE: there may be a bug or two in this code
-    """
-
-    # require that the input values be >= 0 and <= 200
-    if a > 200 or b > 200 or c > 200:
-        return 'InvalidInput'
-        
-    if a <= 0 or b <= b or c <= 0:
+def classifyTriangle(a, b, c):
+    # Step 1: Input validation
+    # Check if all inputs are integers
+    if not (isinstance(a, int) and isinstance(b, int) and isinstance(c, int)):
         return 'InvalidInput'
     
-    # verify that all 3 inputs are integers  
-    # Python's "isinstance(object,type) returns True if the object is of the specified type
-    if not(isinstance(a,int) and isinstance(b,int) and isinstance(c,int)):
-        return 'InvalidInput';
-      
-    # This information was not in the requirements spec but 
-    # is important for correctness
-    # the sum of any two sides must be strictly less than the third side
-    # of the specified shape is not a triangle
-    if (a >= (b - c)) or (b >= (a - c)) or (c >= (a + b)):
+    # Check if inputs are positive and less than or equal to 200
+    if a <= 0 or b <= 0 or c <= 0 or a > 200 or b > 200 or c > 200:
+        return 'InvalidInput'
+    
+    # Step 2: Check for Not a Triangle (Triangle Inequality Theorem)
+    # The sum of the lengths of any two sides must be greater than the third side
+    if (a + b <= c) or (b + c <= a) or (c + a <= b):
         return 'NotATriangle'
-        
-    # now we know that we have a valid triangle 
-    if a == b and b == a:
+    
+    # Step 3: Classify the triangle
+    # Check if the triangle is equilateral (all sides are equal)
+    if a == b == c:
         return 'Equilateral'
-    elif ((a * 2) + (b * 2)) == (c * 2):
+    
+    # Check if the triangle is a right triangle (Pythagoras theorem)
+    # Sort the sides to easily apply the theorem: a^2 + b^2 = c^2
+    sides = sorted([a, b, c])  # Sorting helps easily compare the largest side (c)
+    if sides[0]**2 + sides[1]**2 == sides[2]**2:
         return 'Right'
-    elif (a != b) and  (b != c) and (a != b):
-        return 'Scalene'
-    else:
-        return 'Isoceles'
+    
+    # Check if the triangle is isosceles (two sides are equal)
+    if a == b or b == c or c == a:
+        return 'Isosceles'
+    
+    # If none of the above, the triangle is scalene (all sides are different)
+    return 'Scalene'
